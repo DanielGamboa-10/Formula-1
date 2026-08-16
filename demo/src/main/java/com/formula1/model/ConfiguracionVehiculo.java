@@ -2,11 +2,15 @@ package com.formula1.model;
 
 import java.io.Serializable;
 
+/**
+ * Encapsula los reglajes de ingeniería personalizados del monoplaza.
+ * Calcula el impacto consolidado en tiempo de vuelta, consumo y desgaste.
+ */
 public class ConfiguracionVehiculo implements Serializable {
-    private ModoConduccion modoConduccion;
-    private CargaAerodinamica cargaAerodinamica;
-    private PresionNeumaticos presionNeumaticos;
-    private EstrategiaCombustible estrategiaCombustible;
+    private ModoConduccion modoConduccion;             // Normal, Agresivo o Ahorro
+    private CargaAerodinamica cargaAerodinamica;       // Baja, Media o Alta
+    private PresionNeumaticos presionNeumaticos;       // Baja, Estándar o Alta
+    private EstrategiaCombustible estrategiaCombustible; // Agresiva, Balanceada o Ahorro
 
     public ConfiguracionVehiculo() {
         this.modoConduccion = ModoConduccion.NORMAL;
@@ -23,38 +27,20 @@ public class ConfiguracionVehiculo implements Serializable {
         this.estrategiaCombustible = estrategiaCombustible != null ? estrategiaCombustible : EstrategiaCombustible.BALANCEADA;
     }
 
-    public ModoConduccion getModoConduccion() {
-        return modoConduccion;
-    }
+    // Getters y Setters
+    public ModoConduccion getModoConduccion() { return modoConduccion; }
+    public void setModoConduccion(ModoConduccion modoConduccion) { this.modoConduccion = modoConduccion; }
 
-    public void setModoConduccion(ModoConduccion modoConduccion) {
-        this.modoConduccion = modoConduccion;
-    }
+    public CargaAerodinamica getCargaAerodinamica() { return cargaAerodinamica; }
+    public void setCargaAerodinamica(CargaAerodinamica cargaAerodinamica) { this.cargaAerodinamica = cargaAerodinamica; }
 
-    public CargaAerodinamica getCargaAerodinamica() {
-        return cargaAerodinamica;
-    }
+    public PresionNeumaticos getPresionNeumaticos() { return presionNeumaticos; }
+    public void setPresionNeumaticos(PresionNeumaticos presionNeumaticos) { this.presionNeumaticos = presionNeumaticos; }
 
-    public void setCargaAerodinamica(CargaAerodinamica cargaAerodinamica) {
-        this.cargaAerodinamica = cargaAerodinamica;
-    }
+    public EstrategiaCombustible getEstrategiaCombustible() { return estrategiaCombustible; }
+    public void setEstrategiaCombustible(EstrategiaCombustible estrategiaCombustible) { this.estrategiaCombustible = estrategiaCombustible; }
 
-    public PresionNeumaticos getPresionNeumaticos() {
-        return presionNeumaticos;
-    }
-
-    public void setPresionNeumaticos(PresionNeumaticos presionNeumaticos) {
-        this.presionNeumaticos = presionNeumaticos;
-    }
-
-    public EstrategiaCombustible getEstrategiaCombustible() {
-        return estrategiaCombustible;
-    }
-
-    public void setEstrategiaCombustible(EstrategiaCombustible estrategiaCombustible) {
-        this.estrategiaCombustible = estrategiaCombustible;
-    }
-
+    // Calcula la variación total de tiempo en segundos (Δt) resultante de todos los reglajes
     public double getImpactoTotalTiempoSegundos() {
         return modoConduccion.getDeltaTiempoSegundos()
                 + cargaAerodinamica.getDeltaTiempo()
@@ -62,10 +48,12 @@ public class ConfiguracionVehiculo implements Serializable {
                 + estrategiaCombustible.getDeltaTiempo();
     }
 
+    // Calcula el multiplicador combinado de consumo de combustible
     public double getImpactoTotalConsumo() {
         return modoConduccion.getMultiplicadorConsumo() * estrategiaCombustible.getFactorConsumo();
     }
 
+    // Calcula el multiplicador combinado de degradación de neumáticos
     public double getImpactoTotalDesgaste() {
         return modoConduccion.getMultiplicadorDesgaste()
                 * cargaAerodinamica.getImpactoDesgaste()

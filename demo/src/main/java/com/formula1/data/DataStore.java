@@ -1,33 +1,34 @@
 package com.formula1.data;
 
 import com.formula1.model.*;
-
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * DataStore en memoria basado en Map y HashMap para persistencia temporal.
+ * Persistencia en memoria temporal basada en el patrón Singleton.
+ * Mantiene centralizadas las colecciones Map/HashMap y listas de todas las entidades.
  */
 public class DataStore {
     private static DataStore instance;
 
-    // Almacenamiento por Map / HashMap
-    private final Map<Integer, Piloto> pilotos;
-    private final Map<String, Equipo> equipos;
-    private final Map<String, Circuito> circuitos;
-    private final Map<String, Vehiculo> vehiculos;
-    private final Map<String, ConfiguracionVehiculo> configuracionesGuardadas;
-    private final List<SesionClasificacion> historialClasificaciones;
+    // Mapas en memoria con clave primaria única
+    private final Map<Integer, Piloto> pilotos;                        // Clave: ID del piloto
+    private final Map<String, Equipo> equipos;                         // Clave: Nombre del equipo
+    private final Map<String, Circuito> circuitos;                     // Clave: Nombre del circuito
+    private final Map<String, Vehiculo> vehiculos;                     // Clave: Modelo del monoplaza
+    private final Map<String, ConfiguracionVehiculo> configuraciones;  // Clave: Nombre del preset
+    private final List<SesionClasificacion> historialClasificaciones;  // Historial de clasificaciones
 
+    // Constructor privado para garantizar una única instancia (Singleton)
     private DataStore() {
         this.pilotos = new HashMap<>();
-        this.equipos = new LinkedHashMap<>();
-        this.circuitos = new LinkedHashMap<>();
-        this.vehiculos = new LinkedHashMap<>();
-        this.configuracionesGuardadas = new HashMap<>();
+        this.equipos = new HashMap<>();
+        this.circuitos = new HashMap<>();
+        this.vehiculos = new HashMap<>();
+        this.configuraciones = new HashMap<>();
         this.historialClasificaciones = new ArrayList<>();
     }
 
+    // Acceso global a la única instancia de memoria
     public static synchronized DataStore getInstance() {
         if (instance == null) {
             instance = new DataStore();
@@ -35,31 +36,22 @@ public class DataStore {
         return instance;
     }
 
-    public Map<Integer, Piloto> getPilotos() {
-        return pilotos;
-    }
+    // Getters para acceder a las colecciones
+    public Map<Integer, Piloto> getPilotos() { return pilotos; }
+    public Map<String, Equipo> getEquipos() { return equipos; }
+    public Map<String, Circuito> getCircuitos() { return circuitos; }
+    public Map<String, Vehiculo> getVehiculos() { return vehiculos; }
+    public Map<String, ConfiguracionVehiculo> getConfiguraciones() { return configuraciones; }
+    public Map<String, ConfiguracionVehiculo> getConfiguracionesGuardadas() { return configuraciones; }
+    
+    public List<SesionClasificacion> getHistorialClasificaciones() { return historialClasificaciones; }
 
-    public Map<String, Equipo> getEquipos() {
-        return equipos;
-    }
-
-    public Map<String, Circuito> getCircuitos() {
-        return circuitos;
-    }
-
-    public Map<String, Vehiculo> getVehiculos() {
-        return vehiculos;
-    }
-
-    public Map<String, ConfiguracionVehiculo> getConfiguracionesGuardadas() {
-        return configuracionesGuardadas;
-    }
-
-    public List<SesionClasificacion> getHistorialClasificaciones() {
-        return historialClasificaciones;
-    }
-
+    // Registra una nueva sesión en el historial
     public void agregarHistorial(SesionClasificacion sesion) {
+        historialClasificaciones.add(sesion);
+    }
+
+    public void agregarHistorialClasificacion(SesionClasificacion sesion) {
         historialClasificaciones.add(sesion);
     }
 }
