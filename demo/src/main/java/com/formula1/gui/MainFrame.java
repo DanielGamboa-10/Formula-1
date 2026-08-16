@@ -4,7 +4,10 @@ import com.formula1.service.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainFrame extends JFrame {
     private final CardLayout cardLayout;
@@ -18,7 +21,8 @@ public class MainFrame extends JFrame {
     private final SimulacionPanel simulacionPanel;
     private final HistorialPanel historialPanel;
 
-    private JButton btnNavActivo = null;
+    private final List<NavButton> botonesNav = new ArrayList<>();
+    private NavButton botonActivo = null;
 
     public MainFrame() {
         super("🏎️ Fórmula 1 - Sistema Integral de Simulación y Gestión");
@@ -59,36 +63,43 @@ public class MainFrame extends JFrame {
 
     private void initFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 780);
-        setMinimumSize(new Dimension(1000, 680));
+        setSize(1240, 800);
+        setMinimumSize(new Dimension(1020, 700));
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Barra Lateral (Sidebar) de Navegación F1
+        // Barra Lateral (Sidebar)
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
-        sidebar.setBackground(F1Theme.BG_SIDEBAR);
-        sidebar.setPreferredSize(new Dimension(240, getHeight()));
+        sidebar.setBackground(new Color(16, 18, 28));
+        sidebar.setPreferredSize(new Dimension(250, getHeight()));
         sidebar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, F1Theme.BORDER_COLOR));
 
-        // Logo / Título en la barra lateral
+        // Logo / Título
         JPanel brandPanel = new JPanel(new BorderLayout(5, 5));
         brandPanel.setOpaque(false);
-        brandPanel.setBorder(new EmptyBorder(25, 20, 25, 20));
+        brandPanel.setBorder(new EmptyBorder(25, 20, 20, 20));
 
         JLabel lblLogo = new JLabel("🏎️ FÓRMULA 1");
-        lblLogo.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        lblLogo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         lblLogo.setForeground(F1Theme.RED_PRIMARY);
 
         JLabel lblSub = new JLabel("SIMULATION SUITE");
-        lblSub.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        lblSub.setForeground(F1Theme.TEXT_MUTED);
+        lblSub.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        lblSub.setForeground(new Color(200, 210, 230));
 
         brandPanel.add(lblLogo, BorderLayout.NORTH);
         brandPanel.add(lblSub, BorderLayout.SOUTH);
         sidebar.add(brandPanel);
 
-        // Botones de Navegación
+        // Separador sutil
+        JSeparator sep = new JSeparator();
+        sep.setForeground(F1Theme.BORDER_COLOR);
+        sep.setMaximumSize(new Dimension(250, 1));
+        sidebar.add(sep);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        // Botones de Navegación Personalizados
         sidebar.add(crearBotonNav("🚦 Clasificación F1", "SIMULACION", true));
         sidebar.add(crearBotonNav("🚗 Monoplazas & Telemetría", "VEHICULOS", false));
         sidebar.add(crearBotonNav("⚙️ Reglajes / Setup", "CONFIGURACION", false));
@@ -101,7 +112,7 @@ public class MainFrame extends JFrame {
 
         JLabel lblVersion = new JLabel("v1.0.0 • Java SE Puro");
         lblVersion.setFont(F1Theme.FONT_SMALL);
-        lblVersion.setForeground(F1Theme.TEXT_MUTED);
+        lblVersion.setForeground(new Color(160, 175, 205));
         lblVersion.setBorder(new EmptyBorder(15, 20, 15, 20));
         sidebar.add(lblVersion);
 
@@ -109,36 +120,21 @@ public class MainFrame extends JFrame {
         add(contentPanel, BorderLayout.CENTER);
     }
 
-    private JButton crearBotonNav(String texto, String cardName, boolean inicial) {
-        JButton btn = new JButton(texto);
-        btn.setFont(F1Theme.FONT_BOLD);
-        btn.setMaximumSize(new Dimension(240, 48));
-        btn.setPreferredSize(new Dimension(240, 48));
-        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btn.setHorizontalAlignment(SwingConstants.LEFT);
-        btn.setBorder(new EmptyBorder(10, 20, 10, 20));
-        btn.setFocusPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
+    private NavButton crearBotonNav(String texto, String cardName, boolean inicial) {
+        NavButton btn = new NavButton(texto);
+        btn.setActive(inicial);
         if (inicial) {
-            btn.setBackground(F1Theme.RED_PRIMARY);
-            btn.setForeground(F1Theme.TEXT_PRIMARY);
-            btnNavActivo = btn;
-        } else {
-            btn.setBackground(F1Theme.BG_SIDEBAR);
-            btn.setForeground(F1Theme.TEXT_MUTED);
+            botonActivo = btn;
         }
+        botonesNav.add(btn);
 
         btn.addActionListener(e -> {
-            if (btnNavActivo != null) {
-                btnNavActivo.setBackground(F1Theme.BG_SIDEBAR);
-                btnNavActivo.setForeground(F1Theme.TEXT_MUTED);
+            for (NavButton b : botonesNav) {
+                b.setActive(false);
             }
-            btn.setBackground(F1Theme.RED_PRIMARY);
-            btn.setForeground(F1Theme.TEXT_PRIMARY);
-            btnNavActivo = btn;
+            btn.setActive(true);
+            botonActivo = btn;
 
-            // Actualizar datos si es necesario
             if ("SIMULACION".equals(cardName)) {
                 simulacionPanel.poblarCombos();
             } else if ("HISTORIAL".equals(cardName)) {
@@ -148,21 +144,90 @@ public class MainFrame extends JFrame {
             cardLayout.show(contentPanel, cardName);
         });
 
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                if (btn != btnNavActivo) {
-                    btn.setBackground(F1Theme.BG_CARD);
-                    btn.setForeground(F1Theme.TEXT_PRIMARY);
-                }
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                if (btn != btnNavActivo) {
-                    btn.setBackground(F1Theme.BG_SIDEBAR);
-                    btn.setForeground(F1Theme.TEXT_MUTED);
-                }
-            }
-        });
-
         return btn;
+    }
+
+    /**
+     * Componente personalizado de botón lateral con pintura manual para evitar
+     * que Windows Look & Feel pinte el botón blanco.
+     */
+    private static class NavButton extends JButton {
+        private boolean isActive = false;
+        private boolean isHovered = false;
+
+        public NavButton(String text) {
+            super(text);
+            setFont(new Font("Segoe UI", Font.BOLD, 14));
+            setMaximumSize(new Dimension(250, 46));
+            setPreferredSize(new Dimension(250, 46));
+            setAlignmentX(Component.CENTER_ALIGNMENT);
+            setHorizontalAlignment(SwingConstants.LEFT);
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setContentAreaFilled(false);
+            setOpaque(false);
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            setUI(new BasicButtonUI()); // Evita estilos nativos de Windows
+
+            addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    isHovered = true;
+                    repaint();
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    isHovered = false;
+                    repaint();
+                }
+            });
+        }
+
+        public void setActive(boolean active) {
+            this.isActive = active;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            int w = getWidth();
+            int h = getHeight();
+
+            if (isActive) {
+                // Fondo Activo: Rojo F1 vibrante
+                g2.setColor(F1Theme.RED_PRIMARY);
+                g2.fillRect(0, 0, w, h);
+                // Borde izquierdo indicador blanco
+                g2.setColor(Color.WHITE);
+                g2.fillRect(0, 0, 5, h);
+                setForeground(Color.WHITE);
+            } else if (isHovered) {
+                // Fondo Hover: Azul oscuro elegante
+                g2.setColor(new Color(36, 40, 60));
+                g2.fillRect(0, 0, w, h);
+                g2.setColor(F1Theme.ACCENT_CYAN);
+                g2.fillRect(0, 0, 4, h);
+                setForeground(Color.WHITE);
+            } else {
+                // Fondo Inactivo: Sidebar oscuro
+                g2.setColor(new Color(16, 18, 28));
+                g2.fillRect(0, 0, w, h);
+                // Texto en color plateado brillante de alto contraste
+                setForeground(new Color(230, 238, 255));
+            }
+
+            // Dibujar texto con padding
+            FontMetrics fm = g2.getFontMetrics();
+            int x = 20;
+            int y = (h - fm.getHeight()) / 2 + fm.getAscent();
+
+            g2.setColor(getForeground());
+            g2.setFont(getFont());
+            g2.drawString(getText(), x, y);
+
+            g2.dispose();
+        }
     }
 }
