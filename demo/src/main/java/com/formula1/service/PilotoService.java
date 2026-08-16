@@ -49,6 +49,9 @@ public class PilotoService {
         if (store.getEquipos().containsKey(equipo)) {
             store.getEquipos().get(equipo).agregarPiloto(nuevoId);
         }
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return nuevo;
     }
 
@@ -72,6 +75,9 @@ public class PilotoService {
                 store.getEquipos().get(nuevoEquipo).agregarPiloto(id);
             }
         }
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return true;
     }
 
@@ -84,6 +90,9 @@ public class PilotoService {
             }
             // Remover de vehículos
             store.getVehiculos().values().forEach(v -> v.removerPiloto(id));
+            if (store.isAutoSave()) {
+                store.guardar();
+            }
             return true;
         }
         return false;

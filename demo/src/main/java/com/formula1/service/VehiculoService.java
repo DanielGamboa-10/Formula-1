@@ -45,6 +45,9 @@ public class VehiculoService {
                                      RendimientoVehiculo rendimiento, String imagenUrl) {
         Vehiculo v = new Vehiculo(equipo, modelo, motor, velMax, acel0a100, new ArrayList<>(), rendimiento, imagenUrl);
         store.getVehiculos().put(modelo, v);
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return v;
     }
 
@@ -63,11 +66,18 @@ public class VehiculoService {
             v.setModelo(nuevoModelo);
             store.getVehiculos().put(nuevoModelo, v);
         }
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return true;
     }
 
     public boolean eliminarVehiculo(String modelo) {
-        return store.getVehiculos().remove(modelo) != null;
+        boolean removed = store.getVehiculos().remove(modelo) != null;
+        if (removed && store.isAutoSave()) {
+            store.guardar();
+        }
+        return removed;
     }
 
     public boolean asignarPilotoAVehiculo(int pilotoId, String modelo) {
@@ -76,6 +86,9 @@ public class VehiculoService {
         if (v == null || p == null) return false;
 
         v.asignarPiloto(pilotoId);
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return true;
     }
 

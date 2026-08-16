@@ -11,6 +11,7 @@ public class MenuPrincipal {
     private final ConfiguracionMenu configuracionMenu;
     private final SimulacionMenu simulacionMenu;
     private final HistorialMenu historialMenu;
+    private final PersistenciaMenu persistenciaMenu;
 
     public MenuPrincipal() {
         PilotoService pilotoService = new PilotoService();
@@ -28,6 +29,7 @@ public class MenuPrincipal {
         this.configuracionMenu = new ConfiguracionMenu(configuracionService);
         this.simulacionMenu = new SimulacionMenu(simulacionService, circuitoService, pilotoService, vehiculoService, configuracionService);
         this.historialMenu = new HistorialMenu(estadisticaService);
+        this.persistenciaMenu = new PersistenciaMenu();
     }
 
     public void iniciar() {
@@ -42,9 +44,10 @@ public class MenuPrincipal {
             System.out.println("5. ⚙️  Configuración del Monoplaza (Modo de conducción, aero, neumáticos, combustible)");
             System.out.println(ConsoleUtils.YELLOW + "6. 🚦 SIMULACIÓN DE CLASIFICACIÓN (Vuelta rápida, clima y Pole Position)" + ConsoleUtils.RESET);
             System.out.println("7. 📊 Historial y Comparativa de Tiempos por Circuito");
+            System.out.println("8. 💾 Persistencia de Datos (Guardar, Recargar, Restaurar de fábrica)");
             System.out.println("0. 🚪 Salir del Sistema");
 
-            int opcion = ConsoleUtils.leerEntero("\n👉 Seleccione una opción: ", 0, 7);
+            int opcion = ConsoleUtils.leerEntero("\n👉 Seleccione una opción: ", 0, 8);
             switch (opcion) {
                 case 1:
                     pilotoMenu.mostrarMenu();
@@ -66,6 +69,9 @@ public class MenuPrincipal {
                     break;
                 case 7:
                     historialMenu.mostrarMenu();
+                    break;
+                case 8:
+                    persistenciaMenu.mostrarMenu();
                     break;
                 case 0:
                     System.out.println(ConsoleUtils.GREEN + "\n¡Gracias por utilizar el Simulador de Fórmula 1! Hasta la próxima carrera. 🏁" + ConsoleUtils.RESET);

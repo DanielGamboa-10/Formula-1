@@ -39,6 +39,9 @@ public class CircuitoService {
         RecordVuelta rec = new RecordVuelta(recordTiempo, recordPiloto, recordAnio);
         Circuito circuito = new Circuito(nombre, pais, longitudKm, vueltas, descripcion, rec, new ArrayList<>(), imagenUrl);
         store.getCircuitos().put(nombre, circuito);
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return circuito;
     }
 
@@ -57,17 +60,27 @@ public class CircuitoService {
             c.setNombre(nuevoNombre);
             store.getCircuitos().put(nuevoNombre, c);
         }
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return true;
     }
 
     public boolean eliminarCircuito(String nombre) {
-        return store.getCircuitos().remove(nombre) != null;
+        boolean removed = store.getCircuitos().remove(nombre) != null;
+        if (removed && store.isAutoSave()) {
+            store.guardar();
+        }
+        return removed;
     }
 
     public void registrarGanador(String nombreCircuito, int temporada, int pilotoId) {
         Circuito c = store.getCircuitos().get(nombreCircuito);
         if (c != null) {
             c.getGanadores().add(new GanadorHistorico(temporada, pilotoId));
+            if (store.isAutoSave()) {
+                store.guardar();
+            }
         }
     }
 }

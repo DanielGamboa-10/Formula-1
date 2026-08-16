@@ -3,6 +3,8 @@ package com.formula1.model;
 import java.io.Serializable;
 
 public class RendimientoVehiculo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private RendimientoConduccion conduccionNormal;
     private RendimientoConduccion conduccionAgresiva;
     private RendimientoConduccion ahorroCombustible;

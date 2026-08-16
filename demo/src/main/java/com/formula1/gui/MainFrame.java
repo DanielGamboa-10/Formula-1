@@ -20,6 +20,7 @@ public class MainFrame extends JFrame {
     private final ConfiguracionPanel configuracionPanel;
     private final SimulacionPanel simulacionPanel;
     private final HistorialPanel historialPanel;
+    private final PersistenciaPanel persistenciaPanel;
 
     private final List<NavButton> botonesNav = new ArrayList<>();
     private NavButton botonActivo = null;
@@ -44,6 +45,7 @@ public class MainFrame extends JFrame {
         this.configuracionPanel = new ConfiguracionPanel(configuracionService);
         this.simulacionPanel = new SimulacionPanel(simulacionService, circuitoService, pilotoService, vehiculoService, configuracionService);
         this.historialPanel = new HistorialPanel(estadisticaService);
+        this.persistenciaPanel = new PersistenciaPanel();
 
         // Layout de Contenido
         this.cardLayout = new CardLayout();
@@ -57,6 +59,7 @@ public class MainFrame extends JFrame {
         contentPanel.add(equiposPanel, "EQUIPOS");
         contentPanel.add(circuitosPanel, "CIRCUITOS");
         contentPanel.add(historialPanel, "HISTORIAL");
+        contentPanel.add(persistenciaPanel, "PERSISTENCIA");
 
         initFrame();
     }
@@ -107,6 +110,7 @@ public class MainFrame extends JFrame {
         sidebar.add(crearBotonNav("🏁 Escuderías", "EQUIPOS", false));
         sidebar.add(crearBotonNav("🗺️ Circuitos", "CIRCUITOS", false));
         sidebar.add(crearBotonNav("📊 Historial & Stats", "HISTORIAL", false));
+        sidebar.add(crearBotonNav("💾 Datos & Persistencia", "PERSISTENCIA", false));
 
         sidebar.add(Box.createVerticalGlue());
 
@@ -139,6 +143,8 @@ public class MainFrame extends JFrame {
                 simulacionPanel.poblarCombos();
             } else if ("HISTORIAL".equals(cardName)) {
                 historialPanel.cargarDatos();
+            } else if ("PERSISTENCIA".equals(cardName)) {
+                persistenciaPanel.actualizarMetadatos();
             }
 
             cardLayout.show(contentPanel, cardName);

@@ -7,6 +7,8 @@ import java.io.Serializable;
  * Calcula el impacto consolidado en tiempo de vuelta, consumo y desgaste.
  */
 public class ConfiguracionVehiculo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private ModoConduccion modoConduccion;             // Normal, Agresivo o Ahorro
     private CargaAerodinamica cargaAerodinamica;       // Baja, Media o Alta
     private PresionNeumaticos presionNeumaticos;       // Baja, Estándar o Alta

@@ -7,6 +7,8 @@ import java.io.Serializable;
  * Implementa Comparable para ordenar la parrilla automáticamente de menor a mayor tiempo.
  */
 public class ResultadoVuelta implements Serializable, Comparable<ResultadoVuelta> {
+    private static final long serialVersionUID = 1L;
+
     private int posicion;                          // Posición final en la parrilla (P1 a P20)
     private Piloto piloto;                         // Piloto que marcó el tiempo
     private Vehiculo vehiculo;                     // Monoplaza utilizado

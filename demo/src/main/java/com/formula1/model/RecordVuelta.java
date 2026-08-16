@@ -3,6 +3,8 @@ package com.formula1.model;
 import java.io.Serializable;
 
 public class RecordVuelta implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String tiempo; // e.g. "1:10.166"
     private String piloto;
     private int anio;

@@ -15,10 +15,16 @@ Proyecto interactivo para la administración de escuderías, pilotos, monoplazas
 
 ```text
 src/main/java/com/formula1/
-├── Main.java                          # Punto de entrada principal
+├── Main.java                          # Punto de entrada principal con gestión de arranque y ShutdownHook
 ├── data/
 │   ├── DataLoader.java                # Carga inicial de datos (20 pilotos, equipos, 7 circuitos, monoplazas)
-│   └── DataStore.java                 # Persistencia temporal en memoria con Map y HashMap
+│   ├── DataPersistenceManager.java    # Gestor atómico de serialización, guardado y carga en disco
+│   ├── DataSnapshot.java              # Estructura de respaldo serializable con metadatos y versionado
+│   └── DataStore.java                 # Persistencia centralizada con auto-guardado en disco
+├── gui/
+│   ├── MainFrame.java                 # Ventana principal y barra de navegación interactiva
+│   ├── PersistenciaPanel.java         # Panel de control de persistencia, sincronización y copias de seguridad
+│   └── ...                            # Paneles temáticos de F1
 ├── model/
 │   ├── Piloto.java                    # POJO Piloto (ID, nombre, equipo, rol, experiencia, habilidad)
 │   ├── Equipo.java                    # POJO Escudería (nombre, país, motor, pilotos asignados)
@@ -37,23 +43,18 @@ src/main/java/com/formula1/
 │   ├── RecordVuelta.java              # Récords oficiales
 │   └── GanadorHistorico.java          # Historial de victorias
 ├── service/
-│   ├── PilotoService.java             # CRUD y búsquedas de pilotos
-│   ├── EquipoService.java             # CRUD y asignación de escuderías
-│   ├── CircuitoService.java           # CRUD y análisis de impacto de pistas
-│   ├── VehiculoService.java           # CRUD y comparador de rendimiento entre autos
-│   ├── ConfiguracionService.java      # Gestión y guardado de reglajes
-│   ├── SimulacionService.java         # Motor físico/estratégico de clasificación y Pole Position
+│   ├── PilotoService.java             # CRUD y búsquedas de pilotos con auto-guardado
+│   ├── EquipoService.java             # CRUD y asignación de escuderías con auto-guardado
+│   ├── CircuitoService.java           # CRUD y análisis de pistas con auto-guardado
+│   ├── VehiculoService.java           # CRUD y comparador de rendimiento con auto-guardado
+│   ├── ConfiguracionService.java      # Gestión y guardado de reglajes con auto-guardado
+│   ├── SimulacionService.java         # Motor de clasificación, física y registro histórico persistente
 │   └── EstadisticaService.java        # Historiales y comparativas por circuito
 └── ui/
     ├── ConsoleUtils.java              # Utilidades de consola y formato ANSI
     ├── MenuPrincipal.java             # Menú raíz interactivo
-    ├── PilotoMenu.java                # Interfaz de gestión de pilotos
-    ├── EquipoMenu.java                # Interfaz de escuderías
-    ├── CircuitoMenu.java              # Interfaz de circuitos
-    ├── VehiculoMenu.java              # Interfaz de monoplazas y comparativa
-    ├── ConfiguracionMenu.java         # Interfaz de reglajes
-    ├── SimulacionMenu.java            # Interfaz de clasificación y pole position
-    └── HistorialMenu.java             # Interfaz de estadísticas e historial
+    ├── PersistenciaMenu.java          # Menú de gestión de almacenamiento y copias de seguridad
+    └── ...                            # Menús de consola interactivos
 ```
 
 ---
@@ -70,8 +71,9 @@ javac -d demo/bin $(Get-ChildItem -Path demo/src/main/java -Recurse -Filter "*.j
 java -cp demo/bin com.formula1.Main
 ```
 
-### 3. Ejecutar las Pruebas Unitarias
+### 3. Ejecutar las Pruebas Unitarias y de Persistencia
 ```bash
 javac -d demo/bin $(Get-ChildItem -Path demo/src -Recurse -Filter "*.java" | Select-Object -ExpandProperty FullName)
 java -cp demo/bin com.formula1.SimulacionTest
+java -cp demo/bin com.formula1.PersistenciaTest
 ```

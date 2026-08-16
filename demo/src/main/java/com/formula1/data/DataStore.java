@@ -18,6 +18,8 @@ public class DataStore {
     private final Map<String, ConfiguracionVehiculo> configuraciones;  // Clave: Nombre del preset
     private final List<SesionClasificacion> historialClasificaciones;  // Historial de clasificaciones
 
+    private boolean autoSave = true;
+
     // Constructor privado para garantizar una única instancia (Singleton)
     private DataStore() {
         this.pilotos = new HashMap<>();
@@ -48,10 +50,45 @@ public class DataStore {
 
     // Registra una nueva sesión en el historial
     public void agregarHistorial(SesionClasificacion sesion) {
-        historialClasificaciones.add(sesion);
+        if (sesion != null) {
+            historialClasificaciones.add(sesion);
+            if (autoSave) {
+                guardar();
+            }
+        }
     }
 
     public void agregarHistorialClasificacion(SesionClasificacion sesion) {
-        historialClasificaciones.add(sesion);
+        agregarHistorial(sesion);
+    }
+
+    // Métodos de persistencia en disco
+    public boolean guardar() {
+        return DataPersistenceManager.guardar(this);
+    }
+
+    public boolean cargar() {
+        return DataPersistenceManager.cargar(this);
+    }
+
+    public boolean restaurarPorDefecto() {
+        return DataPersistenceManager.restaurarPorDefecto(this);
+    }
+
+    public void limpiar() {
+        pilotos.clear();
+        equipos.clear();
+        circuitos.clear();
+        vehiculos.clear();
+        configuraciones.clear();
+        historialClasificaciones.clear();
+    }
+
+    public boolean isAutoSave() {
+        return autoSave;
+    }
+
+    public void setAutoSave(boolean autoSave) {
+        this.autoSave = autoSave;
     }
 }

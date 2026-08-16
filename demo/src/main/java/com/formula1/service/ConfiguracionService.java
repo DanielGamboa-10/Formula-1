@@ -35,6 +35,9 @@ public class ConfiguracionService {
                 config.getPresionNeumaticos(),
                 config.getEstrategiaCombustible()
         ));
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
     }
 
     public Map<String, ConfiguracionVehiculo> listarConfiguracionesGuardadas() {
@@ -46,6 +49,10 @@ public class ConfiguracionService {
     }
 
     public boolean eliminarConfiguracion(String nombre) {
-        return store.getConfiguracionesGuardadas().remove(nombre) != null;
+        boolean removed = store.getConfiguracionesGuardadas().remove(nombre) != null;
+        if (removed && store.isAutoSave()) {
+            store.guardar();
+        }
+        return removed;
     }
 }

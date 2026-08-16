@@ -36,6 +36,9 @@ public class EquipoService {
     public Equipo agregarEquipo(String nombre, String pais, String motor, String imagenUrl) {
         Equipo equipo = new Equipo(nombre, pais, motor, new ArrayList<>(), imagenUrl);
         store.getEquipos().put(nombre, equipo);
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return equipo;
     }
 
@@ -60,6 +63,9 @@ public class EquipoService {
                 }
             }
         }
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return true;
     }
 
@@ -72,6 +78,9 @@ public class EquipoService {
                 if (p != null) {
                     p.setEquipo("Sin Equipo");
                 }
+            }
+            if (store.isAutoSave()) {
+                store.guardar();
             }
             return true;
         }
@@ -91,6 +100,9 @@ public class EquipoService {
 
         p.setEquipo(nombreEquipo);
         eq.agregarPiloto(pilotoId);
+        if (store.isAutoSave()) {
+            store.guardar();
+        }
         return true;
     }
 }

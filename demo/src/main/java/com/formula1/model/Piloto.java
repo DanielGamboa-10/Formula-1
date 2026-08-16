@@ -8,6 +8,8 @@ import java.util.Objects;
  * Aplica Encapsulamiento con atributos privados y métodos de acceso.
  */
 public class Piloto implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int id;             // Identificador único (1-20)
     private String nombre;      // Nombre completo del piloto
     private String equipo;      // Escudería a la que pertenece
