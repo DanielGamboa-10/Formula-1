@@ -74,10 +74,8 @@ public class VehiculosPanel extends JPanel {
 
         cbAuto1 = new JComboBox<>();
         cbAuto2 = new JComboBox<>();
-        cbAuto1.setBackground(F1Theme.BG_SIDEBAR);
-        cbAuto1.setForeground(F1Theme.TEXT_PRIMARY);
-        cbAuto2.setBackground(F1Theme.BG_SIDEBAR);
-        cbAuto2.setForeground(F1Theme.TEXT_PRIMARY);
+        F1Theme.estilizarCombo(cbAuto1);
+        F1Theme.estilizarCombo(cbAuto2);
 
         cbAuto1.addActionListener(e -> actualizarComparacion());
         cbAuto2.addActionListener(e -> actualizarComparacion());

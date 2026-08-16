@@ -72,8 +72,8 @@ public class CircuitosPanel extends JPanel {
 
         txtDetalle = new JTextArea();
         txtDetalle.setBackground(F1Theme.BG_SIDEBAR);
-        txtDetalle.setForeground(F1Theme.TEXT_PRIMARY);
-        txtDetalle.setFont(F1Theme.FONT_REGULAR);
+        txtDetalle.setForeground(Color.WHITE);
+        txtDetalle.setFont(new Font("Segoe UI", Font.BOLD, 13));
         txtDetalle.setEditable(false);
         txtDetalle.setLineWrap(true);
         txtDetalle.setWrapStyleWord(true);

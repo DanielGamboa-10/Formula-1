@@ -55,7 +55,9 @@ public class ConfiguracionPanel extends JPanel {
         panelReglajes.add(lblSec1);
 
         // 1. Modo
-        JPanel rowModo = crearFilaControl("Modo de Conducción:", cbModo = new JComboBox<>(ModoConduccion.values()));
+        cbModo = new JComboBox<>(ModoConduccion.values());
+        F1Theme.estilizarCombo(cbModo);
+        JPanel rowModo = crearFilaControl("Modo de Conducción:", cbModo);
         cbModo.setSelectedItem(configuracionService.getConfiguracionActual().getModoConduccion());
         cbModo.addActionListener(e -> {
             configuracionService.getConfiguracionActual().setModoConduccion((ModoConduccion) cbModo.getSelectedItem());
@@ -64,7 +66,9 @@ public class ConfiguracionPanel extends JPanel {
         panelReglajes.add(rowModo);
 
         // 2. Carga Aero
-        JPanel rowAero = crearFilaControl("Carga Aerodinámica (Alerones):", cbAero = new JComboBox<>(CargaAerodinamica.values()));
+        cbAero = new JComboBox<>(CargaAerodinamica.values());
+        F1Theme.estilizarCombo(cbAero);
+        JPanel rowAero = crearFilaControl("Carga Aerodinámica (Alerones):", cbAero);
         cbAero.setSelectedItem(configuracionService.getConfiguracionActual().getCargaAerodinamica());
         cbAero.addActionListener(e -> {
             configuracionService.getConfiguracionActual().setCargaAerodinamica((CargaAerodinamica) cbAero.getSelectedItem());
@@ -73,7 +77,9 @@ public class ConfiguracionPanel extends JPanel {
         panelReglajes.add(rowAero);
 
         // 3. Presión Neumáticos
-        JPanel rowPresion = crearFilaControl("Presión de Neumáticos:", cbPresion = new JComboBox<>(PresionNeumaticos.values()));
+        cbPresion = new JComboBox<>(PresionNeumaticos.values());
+        F1Theme.estilizarCombo(cbPresion);
+        JPanel rowPresion = crearFilaControl("Presión de Neumáticos:", cbPresion);
         cbPresion.setSelectedItem(configuracionService.getConfiguracionActual().getPresionNeumaticos());
         cbPresion.addActionListener(e -> {
             configuracionService.getConfiguracionActual().setPresionNeumaticos((PresionNeumaticos) cbPresion.getSelectedItem());
@@ -82,7 +88,9 @@ public class ConfiguracionPanel extends JPanel {
         panelReglajes.add(rowPresion);
 
         // 4. Combustible
-        JPanel rowComb = crearFilaControl("Estrategia de Combustible / Motor:", cbCombustible = new JComboBox<>(EstrategiaCombustible.values()));
+        cbCombustible = new JComboBox<>(EstrategiaCombustible.values());
+        F1Theme.estilizarCombo(cbCombustible);
+        JPanel rowComb = crearFilaControl("Estrategia de Combustible / Motor:", cbCombustible);
         cbCombustible.setSelectedItem(configuracionService.getConfiguracionActual().getEstrategiaCombustible());
         cbCombustible.addActionListener(e -> {
             configuracionService.getConfiguracionActual().setEstrategiaCombustible((EstrategiaCombustible) cbCombustible.getSelectedItem());
@@ -130,6 +138,7 @@ public class ConfiguracionPanel extends JPanel {
         ));
 
         cbPresets = new JComboBox<>();
+        F1Theme.estilizarCombo(cbPresets);
         actualizarListaPresets();
 
         JPanel btnPresets = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));

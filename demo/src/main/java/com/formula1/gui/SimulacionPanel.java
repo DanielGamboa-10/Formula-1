@@ -46,13 +46,12 @@ public class SimulacionPanel extends JPanel {
     }
 
     private void initUI() {
-        // Encabezado con selectores de Carrera
         JPanel topContainer = new JPanel(new BorderLayout(10, 10));
         topContainer.setOpaque(false);
 
         JLabel lblTitulo = new JLabel("🚦 Simulador Oficial de Sesión de Clasificación");
         lblTitulo.setFont(F1Theme.FONT_TITLE);
-        lblTitulo.setForeground(F1Theme.TEXT_PRIMARY);
+        lblTitulo.setForeground(Color.WHITE);
         topContainer.add(lblTitulo, BorderLayout.NORTH);
 
         // Barra de Controles de Simulación
@@ -64,6 +63,11 @@ public class SimulacionPanel extends JPanel {
         cbVehiculos = new JComboBox<>();
         cbClima = new JComboBox<>(new String[]{"🎲 Clima Aleatorio (Radar)", "☀️ Pista Seca", "🌧️ Lluvia Moderada", "⛈️ Lluvia Extrema"});
 
+        F1Theme.estilizarCombo(cbCircuitos);
+        F1Theme.estilizarCombo(cbPilotos);
+        F1Theme.estilizarCombo(cbVehiculos);
+        F1Theme.estilizarCombo(cbClima);
+
         poblarCombos();
 
         setupBar.add(crearItemControl("Circuito:", cbCircuitos));
@@ -72,13 +76,13 @@ public class SimulacionPanel extends JPanel {
         setupBar.add(crearItemControl("Clima:", cbClima));
 
         btnSimular = F1Theme.crearBotonPrimario("INICIAR CLASIFICACIÓN", "🚦");
-        btnSimular.setFont(F1Theme.FONT_TITLE);
+        btnSimular.setFont(F1Theme.FONT_SUBTITLE);
         btnSimular.addActionListener(e -> ejecutarSimulacionAnimada());
         setupBar.add(btnSimular);
 
         topContainer.add(setupBar, BorderLayout.CENTER);
 
-        // Banners de Estado (Pole Position y Resultado Usuario)
+        // Banners de Estado
         JPanel bannerContainer = new JPanel(new GridLayout(2, 1, 5, 5));
         bannerContainer.setOpaque(false);
 
@@ -96,7 +100,7 @@ public class SimulacionPanel extends JPanel {
         topContainer.add(bannerContainer, BorderLayout.SOUTH);
         add(topContainer, BorderLayout.NORTH);
 
-        // Tabla Central de Resultados de Clasificación
+        // Tabla Central de Resultados
         String[] columnas = {"POS", "Piloto", "Escudería", "Auto", "Tiempo de Vuelta", "Diferencia Líder", "Vel. Media", "Desgaste"};
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
@@ -108,26 +112,26 @@ public class SimulacionPanel extends JPanel {
         tablaResultados = new JTable(tableModel);
         F1Theme.estilizarTabla(tablaResultados);
 
-        // Custom Renderer para colorear la Pole Position en Amarillo/Dorado y el auto del usuario en Verde
+        // Renderer con alto contraste para texto y filas especiales
         tablaResultados.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (!isSelected) {
                     if (row == 0) {
-                        c.setBackground(new Color(50, 45, 10)); // Dorado tenue
-                        c.setForeground(F1Theme.ACCENT_GOLD);
+                        c.setBackground(new Color(65, 55, 10)); // Dorado
+                        c.setForeground(Color.YELLOW);
                         setFont(F1Theme.FONT_BOLD);
                     } else if (tableModel.getValueAt(row, 1) != null &&
                             cbPilotos.getSelectedItem() != null &&
                             tableModel.getValueAt(row, 1).toString().contains(cbPilotos.getSelectedItem().toString())) {
-                        c.setBackground(new Color(15, 45, 25)); // Verde tenue para tu piloto
-                        c.setForeground(F1Theme.ACCENT_GREEN);
+                        c.setBackground(new Color(15, 65, 35)); // Verde brillante
+                        c.setForeground(Color.GREEN);
                         setFont(F1Theme.FONT_BOLD);
                     } else {
-                        c.setBackground(F1Theme.BG_CARD);
-                        c.setForeground(F1Theme.TEXT_PRIMARY);
-                        setFont(F1Theme.FONT_REGULAR);
+                        c.setBackground(row % 2 == 0 ? F1Theme.BG_CARD : new Color(32, 35, 50));
+                        c.setForeground(Color.WHITE);
+                        setFont(F1Theme.FONT_BOLD);
                     }
                 }
                 return c;
@@ -143,6 +147,7 @@ public class SimulacionPanel extends JPanel {
         progressBar = new JProgressBar();
         progressBar.setVisible(false);
         progressBar.setStringPainted(true);
+        progressBar.setFont(F1Theme.FONT_BOLD);
         progressBar.setForeground(F1Theme.RED_PRIMARY);
         progressBar.setBackground(F1Theme.BG_SIDEBAR);
         add(progressBar, BorderLayout.SOUTH);
@@ -152,12 +157,9 @@ public class SimulacionPanel extends JPanel {
         JPanel p = new JPanel(new BorderLayout(3, 3));
         p.setOpaque(false);
         JLabel l = new JLabel(label);
-        l.setFont(F1Theme.FONT_SMALL);
+        l.setFont(F1Theme.FONT_BOLD);
         l.setForeground(F1Theme.TEXT_MUTED);
         p.add(l, BorderLayout.NORTH);
-
-        combo.setBackground(F1Theme.BG_SIDEBAR);
-        combo.setForeground(F1Theme.TEXT_PRIMARY);
         p.add(combo, BorderLayout.CENTER);
         return p;
     }
@@ -201,12 +203,11 @@ public class SimulacionPanel extends JPanel {
         progressBar.setValue(0);
         progressBar.setString("🟢 Bandera Verde: Monoplazas en vuelta de calentamiento...");
 
-        // Timer animado en hilo Swing Worker
         SwingWorker<SesionClasificacion, Integer> worker = new SwingWorker<>() {
             @Override
             protected SesionClasificacion doInBackground() throws Exception {
                 for (int i = 1; i <= 100; i += 10) {
-                    Thread.sleep(40);
+                    Thread.sleep(35);
                     publish(i);
                 }
                 return simulacionService.simularClasificacion(circuito, clima, piloto, vehiculo, config);
