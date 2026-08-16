@@ -4,62 +4,74 @@ Proyecto interactivo para la administración de escuderías, pilotos, monoplazas
 
 ---
 
-## 👥 División de Trabajo y Ramas Git
+## 👥 Trabajo en Equipo y Ramas Git
 
-El proyecto se encuentra modularizado y distribuido equitativamente entre los dos integrantes del equipo:
-
-### 🔴 Integrante 1 (Rama: `DevDanielGamboa`):
-* **Módulo de Monoplazas:** CRUD de vehículos, asignación de pilotos y comparador visual de rendimiento (velocidad punta, aceleración 0-100, consumo y desgaste en pista seca/mojada).
-* **Módulo de Configuración / Reglajes:** Modos de conducción (*Normal, Agresivo, Ahorro*), carga aerodinámica (*Baja, Media, Alta*), presión de neumáticos (*Baja, Estándar, Alta*), estrategia de combustible y guardado de presets.
-* **Motor de Simulación de Clasificación:** Algoritmo estocástico y físico de vuelta rápida, generador de clima aleatorio (*Seco, Lluvioso, Extremo*), ordenamiento de parrilla de 20 pilotos y determinación de la **Pole Position**.
-* **Módulo de Historial y Estadísticas:** Persistencia de sesiones previas y comparador de tiempos por circuito.
-* **Batería de Pruebas Unitarias:** `SimulacionTest.java`.
-
-### 🔵 Integrante 2:
-* **Módulo de Pilotos:** CRUD de pilotos, roles (*Líder/Escudero*), destreza, experiencia y búsquedas avanzadas.
-* **Módulo de Escuderías:** CRUD de equipos, gestión de motores y asignación de competidores.
-* **Módulo de Circuitos:** CRUD de circuitos, longitud, vueltas, récords históricos, historial de ganadores e impacto de abrasión/consumo.
+* **Rama Principal:** `main` (Estructura base del proyecto)
+* **Rama de Desarrollo (Daniel Gamboa):** `DevDanielGamboa` (Módulos de Monoplazas, Reglajes/Configuraciones, Motor de Simulación de Clasificación, Estadísticas e Historiales, e Interfaz de Consola).
 
 ---
 
-## 🧱 Arquitectura del Código
+## 🧱 Arquitectura y Estructura del Código
 
 ```text
 src/main/java/com/formula1/
-├── Main.java                          # Punto de entrada de la aplicación
+├── Main.java                          # Punto de entrada principal
 ├── data/
-│   ├── DataLoader.java                # Carga inicial de datos del enunciado
+│   ├── DataLoader.java                # Carga inicial de datos (20 pilotos, equipos, 7 circuitos, monoplazas)
 │   └── DataStore.java                 # Persistencia temporal en memoria con Map y HashMap
 ├── model/
-│   ├── Piloto.java, Equipo.java, Circuito.java, Vehiculo.java
-│   ├── RendimientoVehiculo.java, RendimientoConduccion.java
-│   ├── ConfiguracionVehiculo.java, ResultadoVuelta.java, SesionClasificacion.java
-│   └── Enums: Clima, ModoConduccion, CargaAerodinamica, PresionNeumaticos, EstrategiaCombustible
+│   ├── Piloto.java                    # POJO Piloto (ID, nombre, equipo, rol, experiencia, habilidad)
+│   ├── Equipo.java                    # POJO Escudería (nombre, país, motor, pilotos asignados)
+│   ├── Circuito.java                  # POJO Circuito (longitud, vueltas, récords, clima, desgaste/consumo)
+│   ├── Vehiculo.java                  # POJO Monoplaza (modelo, motor, V.Max, 0-100, rendimientos)
+│   ├── RendimientoVehiculo.java       # Rendimiento según modo normal, agresivo y ahorro
+│   ├── RendimientoConduccion.java     # Velocidades y matrices de consumo/desgaste por clima
+│   ├── ConfiguracionVehiculo.java     # Reglajes del monoplaza (Modo conducción, aero, neumáticos, combustible)
+│   ├── Clima.java                     # Enum (Seco, Lluvioso, Extremo)
+│   ├── ModoConduccion.java            # Enum (Normal, Agresivo, Ahorro)
+│   ├── CargaAerodinamica.java         # Enum (Baja, Media, Alta)
+│   ├── PresionNeumaticos.java         # Enum (Baja, Estándar, Alta)
+│   ├── EstrategiaCombustible.java     # Enum (Agresiva, Balanceada, Ahorro)
+│   ├── ResultadoVuelta.java           # Tiempos, telemetría y posiciones
+│   ├── SesionClasificacion.java       # Registro histórico de sesión
+│   ├── RecordVuelta.java              # Récords oficiales
+│   └── GanadorHistorico.java          # Historial de victorias
 ├── service/
-│   ├── VehiculoService.java, ConfiguracionService.java, SimulacionService.java, EstadisticaService.java
-│   └── PilotoService.java, EquipoService.java, CircuitoService.java
+│   ├── PilotoService.java             # CRUD y búsquedas de pilotos
+│   ├── EquipoService.java             # CRUD y asignación de escuderías
+│   ├── CircuitoService.java           # CRUD y análisis de impacto de pistas
+│   ├── VehiculoService.java           # CRUD y comparador de rendimiento entre autos
+│   ├── ConfiguracionService.java      # Gestión y guardado de reglajes
+│   ├── SimulacionService.java         # Motor físico/estratégico de clasificación y Pole Position
+│   └── EstadisticaService.java        # Historiales y comparativas por circuito
 └── ui/
-    ├── ConsoleUtils.java, MenuPrincipal.java
-    ├── VehiculoMenu.java, ConfiguracionMenu.java, SimulacionMenu.java, HistorialMenu.java
-    └── PilotoMenu.java, EquipoMenu.java, CircuitoMenu.java
+    ├── ConsoleUtils.java              # Utilidades de consola y formato ANSI
+    ├── MenuPrincipal.java             # Menú raíz interactivo
+    ├── PilotoMenu.java                # Interfaz de gestión de pilotos
+    ├── EquipoMenu.java                # Interfaz de escuderías
+    ├── CircuitoMenu.java              # Interfaz de circuitos
+    ├── VehiculoMenu.java              # Interfaz de monoplazas y comparativa
+    ├── ConfiguracionMenu.java         # Interfaz de reglajes
+    ├── SimulacionMenu.java            # Interfaz de clasificación y pole position
+    └── HistorialMenu.java             # Interfaz de estadísticas e historial
 ```
 
 ---
 
-## 🚀 Compilación y Ejecución
+## 🚀 Compilación y Ejecución (Java Puro)
 
-### Compilar clases:
-```powershell
-javac -d demo/bin (Get-ChildItem -Path demo/src/main/java -Recurse -Filter "*.java" | Select-Object -ExpandProperty FullName)
+### 1. Compilar todas las clases
+```bash
+javac -d demo/bin $(Get-ChildItem -Path demo/src/main/java -Recurse -Filter "*.java" | Select-Object -ExpandProperty FullName)
 ```
 
-### Ejecutar simulador:
-```powershell
+### 2. Ejecutar la Aplicación
+```bash
 java -cp demo/bin com.formula1.Main
 ```
 
-### Ejecutar pruebas:
-```powershell
-javac -d demo/bin (Get-ChildItem -Path demo/src -Recurse -Filter "*.java" | Select-Object -ExpandProperty FullName)
+### 3. Ejecutar las Pruebas Unitarias
+```bash
+javac -d demo/bin $(Get-ChildItem -Path demo/src -Recurse -Filter "*.java" | Select-Object -ExpandProperty FullName)
 java -cp demo/bin com.formula1.SimulacionTest
 ```
