@@ -6,7 +6,6 @@ import com.formula1.service.ConfiguracionService;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Map;
 
 public class ConfiguracionPanel extends JPanel {
     private final ConfiguracionService configuracionService;
@@ -35,9 +34,9 @@ public class ConfiguracionPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
 
-        JLabel lblTitulo = new JLabel("⚙️ Reglajes de Ingeniería y Configuración del Monoplaza");
+        JLabel lblTitulo = new JLabel("REGLAJES DE INGENIERÍA Y CONFIGURACIÓN DEL MONOPLAZA");
         lblTitulo.setFont(F1Theme.FONT_TITLE);
-        lblTitulo.setForeground(F1Theme.TEXT_PRIMARY);
+        lblTitulo.setForeground(Color.WHITE);
         headerPanel.add(lblTitulo, BorderLayout.WEST);
         add(headerPanel, BorderLayout.NORTH);
 
@@ -49,7 +48,7 @@ public class ConfiguracionPanel extends JPanel {
         JPanel panelReglajes = F1Theme.crearTarjeta();
         panelReglajes.setLayout(new GridLayout(5, 1, 10, 15));
 
-        JLabel lblSec1 = new JLabel("🔧 PARÁMETROS DE CONFIGURACIÓN");
+        JLabel lblSec1 = new JLabel("PARÁMETROS DE CONFIGURACIÓN");
         lblSec1.setFont(F1Theme.FONT_SUBTITLE);
         lblSec1.setForeground(F1Theme.RED_PRIMARY);
         panelReglajes.add(lblSec1);
@@ -104,7 +103,7 @@ public class ConfiguracionPanel extends JPanel {
         JPanel panelTelemetria = F1Theme.crearTarjeta();
         panelTelemetria.setLayout(new BorderLayout(15, 15));
 
-        JLabel lblSec2 = new JLabel("📊 TELEMETRÍA ESTIMADA EN PISTA");
+        JLabel lblSec2 = new JLabel("TELEMETRÍA ESTIMADA EN PISTA");
         lblSec2.setFont(F1Theme.FONT_SUBTITLE);
         lblSec2.setForeground(F1Theme.ACCENT_GREEN);
         panelTelemetria.add(lblSec2, BorderLayout.NORTH);
@@ -118,11 +117,11 @@ public class ConfiguracionPanel extends JPanel {
 
         lblDeltaConsumo = new JLabel("Multiplicador Consumo: x1.00");
         lblDeltaConsumo.setFont(F1Theme.FONT_SUBTITLE);
-        lblDeltaConsumo.setForeground(F1Theme.TEXT_PRIMARY);
+        lblDeltaConsumo.setForeground(Color.WHITE);
 
         lblDeltaDesgaste = new JLabel("Multiplicador Desgaste: x1.00");
         lblDeltaDesgaste.setFont(F1Theme.FONT_SUBTITLE);
-        lblDeltaDesgaste.setForeground(F1Theme.TEXT_PRIMARY);
+        lblDeltaDesgaste.setForeground(Color.WHITE);
 
         metricsPanel.add(lblDeltaTiempo);
         metricsPanel.add(lblDeltaConsumo);
@@ -134,7 +133,7 @@ public class ConfiguracionPanel extends JPanel {
         presetsPanel.setOpaque(false);
         presetsPanel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(F1Theme.BORDER_COLOR),
-                "💾 Presets Guardados", 0, 0, F1Theme.FONT_BOLD, F1Theme.TEXT_MUTED
+                "Presets Guardados", 0, 0, F1Theme.FONT_BOLD, F1Theme.TEXT_MUTED
         ));
 
         cbPresets = new JComboBox<>();
@@ -144,10 +143,12 @@ public class ConfiguracionPanel extends JPanel {
         JPanel btnPresets = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
         btnPresets.setOpaque(false);
 
-        JButton btnGuardar = F1Theme.crearBotonPrimario("Guardar Actual", "💾");
+        JButton btnGuardar = F1Theme.crearBotonPrimario("GUARDAR", "💾");
+        btnGuardar.setPreferredSize(new Dimension(140, 36));
         btnGuardar.addActionListener(e -> guardarPresetModal());
 
-        JButton btnCargar = F1Theme.crearBotonSecundario("📂 Cargar");
+        JButton btnCargar = F1Theme.crearBotonSecundario("CARGAR");
+        btnCargar.setPreferredSize(new Dimension(120, 36));
         btnCargar.addActionListener(e -> cargarPresetSeleccionado());
 
         btnPresets.add(btnGuardar);
@@ -167,12 +168,8 @@ public class ConfiguracionPanel extends JPanel {
         p.setOpaque(false);
         JLabel lbl = new JLabel(labelText);
         lbl.setFont(F1Theme.FONT_BOLD);
-        lbl.setForeground(F1Theme.TEXT_PRIMARY);
+        lbl.setForeground(Color.WHITE);
         p.add(lbl, BorderLayout.NORTH);
-
-        combo.setBackground(F1Theme.BG_SIDEBAR);
-        combo.setForeground(F1Theme.TEXT_PRIMARY);
-        combo.setFont(F1Theme.FONT_REGULAR);
         p.add(combo, BorderLayout.CENTER);
         return p;
     }
@@ -180,11 +177,11 @@ public class ConfiguracionPanel extends JPanel {
     private void actualizarTelemetria() {
         ConfiguracionVehiculo c = configuracionService.getConfiguracionActual();
         double dt = c.getImpactoTotalTiempoSegundos();
-        lblDeltaTiempo.setText(String.format("⏱️ Impacto en Tiempo de Vuelta: %+5.2f s / vta", dt));
+        lblDeltaTiempo.setText(String.format("Impacto en Tiempo: %+5.2f s / vuelta", dt));
         lblDeltaTiempo.setForeground(dt <= 0 ? F1Theme.ACCENT_GREEN : F1Theme.RED_PRIMARY);
 
-        lblDeltaConsumo.setText(String.format("⛽ Factor Consumo Combustible: x%.2f", c.getImpactoTotalConsumo()));
-        lblDeltaDesgaste.setText(String.format("🛞 Factor Desgaste Neumáticos: x%.2f", c.getImpactoTotalDesgaste()));
+        lblDeltaConsumo.setText(String.format("Factor Consumo Combustible: x%.2f", c.getImpactoTotalConsumo()));
+        lblDeltaDesgaste.setText(String.format("Factor Desgaste Neumáticos: x%.2f", c.getImpactoTotalDesgaste()));
     }
 
     private void actualizarListaPresets() {

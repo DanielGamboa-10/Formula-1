@@ -29,12 +29,13 @@ public class HistorialPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
 
-        JLabel lblTitulo = new JLabel("📊 Historial de Sesiones de Clasificación y Estadísticas");
+        JLabel lblTitulo = new JLabel("HISTORIAL DE SESIONES DE CLASIFICACIÓN Y ESTADÍSTICAS");
         lblTitulo.setFont(F1Theme.FONT_TITLE);
-        lblTitulo.setForeground(F1Theme.TEXT_PRIMARY);
+        lblTitulo.setForeground(Color.WHITE);
         headerPanel.add(lblTitulo, BorderLayout.WEST);
 
-        JButton btnRefrescar = F1Theme.crearBotonSecundario("🔄 Actualizar Historial");
+        JButton btnRefrescar = F1Theme.crearBotonSecundario("ACTUALIZAR HISTORIAL");
+        btnRefrescar.setPreferredSize(new Dimension(200, 36));
         btnRefrescar.addActionListener(e -> cargarDatos());
         headerPanel.add(btnRefrescar, BorderLayout.EAST);
 

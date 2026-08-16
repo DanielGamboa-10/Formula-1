@@ -30,23 +30,25 @@ public class PilotosPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
 
-        JLabel lblTitulo = new JLabel("🏎️ Gestión de Pilotos Oficiales FIA");
+        JLabel lblTitulo = new JLabel("GESTIÓN DE PILOTOS OFICIALES FIA");
         lblTitulo.setFont(F1Theme.FONT_TITLE);
-        lblTitulo.setForeground(F1Theme.TEXT_PRIMARY);
+        lblTitulo.setForeground(Color.WHITE);
 
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         searchPanel.setOpaque(false);
 
         txtBuscar = new JTextField(15);
-        txtBuscar.setBackground(F1Theme.BG_CARD);
-        txtBuscar.setForeground(F1Theme.TEXT_PRIMARY);
-        txtBuscar.setCaretColor(F1Theme.TEXT_PRIMARY);
+        txtBuscar.setBackground(F1Theme.BG_INPUT);
+        txtBuscar.setForeground(Color.WHITE);
+        txtBuscar.setCaretColor(Color.WHITE);
+        txtBuscar.setFont(F1Theme.FONT_BOLD);
         txtBuscar.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(F1Theme.BORDER_COLOR),
                 new EmptyBorder(6, 10, 6, 10)
         ));
 
-        JButton btnBuscar = F1Theme.crearBotonSecundario("🔍 Buscar");
+        JButton btnBuscar = F1Theme.crearBotonSecundario("BUSCAR");
+        btnBuscar.setPreferredSize(new Dimension(100, 34));
         btnBuscar.addActionListener(e -> {
             String q = txtBuscar.getText().trim();
             if (q.isEmpty()) {
@@ -56,8 +58,11 @@ public class PilotosPanel extends JPanel {
             }
         });
 
-        searchPanel.add(new JLabel("Filtrar:"));
-        searchPanel.getComponent(searchPanel.getComponentCount() - 1).setForeground(F1Theme.TEXT_MUTED);
+        JLabel lblFiltrar = new JLabel("Filtrar por nombre:");
+        lblFiltrar.setFont(F1Theme.FONT_BOLD);
+        lblFiltrar.setForeground(F1Theme.TEXT_MUTED);
+
+        searchPanel.add(lblFiltrar);
         searchPanel.add(txtBuscar);
         searchPanel.add(btnBuscar);
 
@@ -82,19 +87,19 @@ public class PilotosPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         // Barra de botones CRUD
-        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         actionsPanel.setOpaque(false);
 
-        JButton btnNuevo = F1Theme.crearBotonPrimario("Nuevo Piloto", "➕");
+        JButton btnNuevo = F1Theme.crearBotonPrimario("NUEVO PILOTO", "+");
         btnNuevo.addActionListener(e -> abrirModalNuevoPiloto());
 
-        JButton btnEditar = F1Theme.crearBotonSecundario("✏️ Editar Seleccionado");
+        JButton btnEditar = F1Theme.crearBotonSecundario("EDITAR PILOTO");
         btnEditar.addActionListener(e -> editarPilotoSeleccionado());
 
-        JButton btnEliminar = F1Theme.crearBotonSecundario("🗑️ Eliminar");
+        JButton btnEliminar = F1Theme.crearBotonSecundario("ELIMINAR PILOTO");
         btnEliminar.addActionListener(e -> eliminarPilotoSeleccionado());
 
-        JButton btnRefrescar = F1Theme.crearBotonSecundario("🔄 Recargar");
+        JButton btnRefrescar = F1Theme.crearBotonSecundario("RECARGAR");
         btnRefrescar.addActionListener(e -> {
             txtBuscar.setText("");
             cargarDatos(pilotoService.listarTodos());

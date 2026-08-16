@@ -32,13 +32,12 @@ public class CircuitosPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
 
-        JLabel lblTitulo = new JLabel("🗺️ Circuitos Oficiales del Campeonato");
+        JLabel lblTitulo = new JLabel("CIRCUITOS OFICIALES DEL CAMPEONATO");
         lblTitulo.setFont(F1Theme.FONT_TITLE);
-        lblTitulo.setForeground(F1Theme.TEXT_PRIMARY);
+        lblTitulo.setForeground(Color.WHITE);
         headerPanel.add(lblTitulo, BorderLayout.WEST);
         add(headerPanel, BorderLayout.NORTH);
 
-        // Centro dividido: Tabla a la izquierda, detalles / telemetría de pista a la derecha
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setOpaque(false);
         splitPane.setBorder(null);
@@ -61,13 +60,12 @@ public class CircuitosPanel extends JPanel {
         scrollTabla.setBorder(BorderFactory.createLineBorder(F1Theme.BORDER_COLOR));
         splitPane.setLeftComponent(scrollTabla);
 
-        // Panel de Detalle Derecho
         JPanel panelDetalle = F1Theme.crearTarjeta();
         panelDetalle.setLayout(new BorderLayout(10, 10));
 
-        JLabel lblInfo = new JLabel("📊 Ficha Técnica y Ganadores");
+        JLabel lblInfo = new JLabel("FICHA TÉCNICA Y GANADORES");
         lblInfo.setFont(F1Theme.FONT_SUBTITLE);
-        lblInfo.setForeground(F1Theme.RED_PRIMARY);
+        lblInfo.setForeground(F1Theme.ACCENT_CYAN);
         panelDetalle.add(lblInfo, BorderLayout.NORTH);
 
         txtDetalle = new JTextArea();
@@ -86,14 +84,13 @@ public class CircuitosPanel extends JPanel {
         splitPane.setRightComponent(panelDetalle);
         add(splitPane, BorderLayout.CENTER);
 
-        // Botones inferiores
-        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         actionsPanel.setOpaque(false);
 
-        JButton btnNuevo = F1Theme.crearBotonPrimario("Agregar Circuito", "➕");
+        JButton btnNuevo = F1Theme.crearBotonPrimario("AGREGAR CIRCUITO", "+");
         btnNuevo.addActionListener(e -> agregarCircuitoModal());
 
-        JButton btnEliminar = F1Theme.crearBotonSecundario("🗑️ Eliminar Circuito");
+        JButton btnEliminar = F1Theme.crearBotonSecundario("ELIMINAR CIRCUITO");
         btnEliminar.addActionListener(e -> eliminarCircuitoModal());
 
         actionsPanel.add(btnNuevo);
@@ -130,31 +127,31 @@ public class CircuitosPanel extends JPanel {
         if (c == null) return;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("🏁 ").append(c.getNombre().toUpperCase()).append("\n");
-        sb.append("📍 País: ").append(c.getPais()).append("\n");
-        sb.append("📏 Longitud: ").append(c.getLongitudKm()).append(" km (").append(c.getVueltas()).append(" vueltas de GP)\n");
-        sb.append("🌦️ Clima típico: ").append(c.getClimaHabitual()).append("\n\n");
-        sb.append("📝 DESCRIPCIÓN:\n").append(c.getDescripcion()).append("\n\n");
+        sb.append("CIRCUITO: ").append(c.getNombre().toUpperCase()).append("\n");
+        sb.append("País: ").append(c.getPais()).append("\n");
+        sb.append("Longitud: ").append(c.getLongitudKm()).append(" km (").append(c.getVueltas()).append(" vueltas de GP)\n");
+        sb.append("Clima típico: ").append(c.getClimaHabitual()).append("\n\n");
+        sb.append("DESCRIPCIÓN:\n").append(c.getDescripcion()).append("\n\n");
 
         if (c.getRecordVuelta() != null) {
-            sb.append("⏱️ RÉCORD OFICIAL DE VUELTA:\n");
+            sb.append("RÉCORD OFICIAL DE VUELTA:\n");
             sb.append("   ").append(c.getRecordVuelta().getTiempo())
               .append(" - ").append(c.getRecordVuelta().getPiloto())
               .append(" (").append(c.getRecordVuelta().getAnio()).append(")\n\n");
         }
 
-        sb.append("📊 IMPACTO DE TRAZADO EN EL MONOPLAZA:\n");
-        sb.append("   • Desgaste de Neumáticos: x").append(String.format("%.2f", c.getFactorDesgasteNeumaticos())).append("\n");
-        sb.append("   • Consumo de Combustible: x").append(String.format("%.2f", c.getFactorConsumoCombustible())).append("\n\n");
+        sb.append("IMPACTO EN EL MONOPLAZA:\n");
+        sb.append("   • Factor Desgaste de Neumáticos: x").append(String.format("%.2f", c.getFactorDesgasteNeumaticos())).append("\n");
+        sb.append("   • Factor Consumo de Combustible: x").append(String.format("%.2f", c.getFactorConsumoCombustible())).append("\n\n");
 
-        sb.append("🏆 HISTORIAL DE GANADORES:\n");
+        sb.append("HISTORIAL DE GANADORES:\n");
         if (c.getGanadores().isEmpty()) {
             sb.append("   Sin registros de ganadores previos.\n");
         } else {
             for (GanadorHistorico g : c.getGanadores()) {
                 Piloto p = DataStore.getInstance().getPilotos().get(g.getPilotoId());
                 String pNombre = (p != null) ? p.getNombre() + " (" + p.getEquipo() + ")" : "Piloto #" + g.getPilotoId();
-                sb.append("   • Temp. ").append(g.getTemporada()).append(": ").append(pNombre).append("\n");
+                sb.append("   • Temporada ").append(g.getTemporada()).append(": ").append(pNombre).append("\n");
             }
         }
 

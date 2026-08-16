@@ -14,7 +14,6 @@ public class VehiculosPanel extends JPanel {
     private JTable tablaVehiculos;
     private DefaultTableModel tableModel;
 
-    // Comparador visual
     private JComboBox<String> cbAuto1;
     private JComboBox<String> cbAuto2;
     private JTextArea txtComparacion;
@@ -33,19 +32,17 @@ public class VehiculosPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
 
-        JLabel lblTitulo = new JLabel("🚗 Monoplazas y Telemetría de Rendimiento");
+        JLabel lblTitulo = new JLabel("MONOPLAZAS Y TELEMETRÍA DE RENDIMIENTO");
         lblTitulo.setFont(F1Theme.FONT_TITLE);
-        lblTitulo.setForeground(F1Theme.TEXT_PRIMARY);
+        lblTitulo.setForeground(Color.WHITE);
         headerPanel.add(lblTitulo, BorderLayout.WEST);
         add(headerPanel, BorderLayout.NORTH);
 
-        // Panel Principal Dividido: Arriba Tabla, Abajo Comparador Visual
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPane.setOpaque(false);
         splitPane.setBorder(null);
         splitPane.setDividerLocation(260);
 
-        // Tabla superior
         String[] columnas = {"Modelo", "Escudería", "Motor", "Velocidad Máxima", "Aceleración 0-100 km/h", "Pilotos Asignados"};
         tableModel = new DefaultTableModel(columnas, 0) {
             @Override
@@ -68,7 +65,7 @@ public class VehiculosPanel extends JPanel {
         JPanel compHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5));
         compHeader.setOpaque(false);
 
-        JLabel lblCompTitle = new JLabel("⚖️ Comparador Directo de Rendimiento:");
+        JLabel lblCompTitle = new JLabel("COMPARADOR DIRECTO DE RENDIMIENTO:");
         lblCompTitle.setFont(F1Theme.FONT_SUBTITLE);
         lblCompTitle.setForeground(F1Theme.RED_PRIMARY);
 
@@ -80,15 +77,22 @@ public class VehiculosPanel extends JPanel {
         cbAuto1.addActionListener(e -> actualizarComparacion());
         cbAuto2.addActionListener(e -> actualizarComparacion());
 
-        JButton btnComparar = F1Theme.crearBotonPrimario("Comparar", "⚡");
+        JButton btnComparar = F1Theme.crearBotonPrimario("COMPARAR", "⚡");
+        btnComparar.setPreferredSize(new Dimension(130, 36));
         btnComparar.addActionListener(e -> actualizarComparacion());
 
+        JLabel lblA1 = new JLabel("Auto 1:");
+        lblA1.setFont(F1Theme.FONT_BOLD);
+        lblA1.setForeground(F1Theme.TEXT_MUTED);
+
+        JLabel lblA2 = new JLabel("Auto 2:");
+        lblA2.setFont(F1Theme.FONT_BOLD);
+        lblA2.setForeground(F1Theme.TEXT_MUTED);
+
         compHeader.add(lblCompTitle);
-        compHeader.add(new JLabel("Auto 1:"));
-        compHeader.getComponent(compHeader.getComponentCount() - 1).setForeground(F1Theme.TEXT_MUTED);
+        compHeader.add(lblA1);
         compHeader.add(cbAuto1);
-        compHeader.add(new JLabel("Auto 2:"));
-        compHeader.getComponent(compHeader.getComponentCount() - 1).setForeground(F1Theme.TEXT_MUTED);
+        compHeader.add(lblA2);
         compHeader.add(cbAuto2);
         compHeader.add(btnComparar);
 
@@ -96,7 +100,7 @@ public class VehiculosPanel extends JPanel {
 
         txtComparacion = new JTextArea();
         txtComparacion.setBackground(F1Theme.BG_SIDEBAR);
-        txtComparacion.setForeground(F1Theme.TEXT_PRIMARY);
+        txtComparacion.setForeground(Color.WHITE);
         txtComparacion.setFont(F1Theme.FONT_TIMER);
         txtComparacion.setEditable(false);
         txtComparacion.setBorder(new EmptyBorder(10, 15, 10, 15));
@@ -108,14 +112,13 @@ public class VehiculosPanel extends JPanel {
         splitPane.setBottomComponent(panelComparador);
         add(splitPane, BorderLayout.CENTER);
 
-        // Barra inferior
-        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         actionsPanel.setOpaque(false);
 
-        JButton btnNuevo = F1Theme.crearBotonPrimario("Nuevo Monoplaza", "➕");
+        JButton btnNuevo = F1Theme.crearBotonPrimario("NUEVO MONOPLAZA", "+");
         btnNuevo.addActionListener(e -> agregarVehiculoModal());
 
-        JButton btnEliminar = F1Theme.crearBotonSecundario("🗑️ Eliminar Monoplaza");
+        JButton btnEliminar = F1Theme.crearBotonSecundario("ELIMINAR MONOPLAZA");
         btnEliminar.addActionListener(e -> eliminarVehiculoModal());
 
         actionsPanel.add(btnNuevo);

@@ -28,9 +28,9 @@ public class EquiposPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
 
-        JLabel lblTitulo = new JLabel("🏁 Escuderías y Proveedores de Motor");
+        JLabel lblTitulo = new JLabel("ESCUDERÍAS Y PROVEEDORES DE MOTOR");
         lblTitulo.setFont(F1Theme.FONT_TITLE);
-        lblTitulo.setForeground(F1Theme.TEXT_PRIMARY);
+        lblTitulo.setForeground(Color.WHITE);
         headerPanel.add(lblTitulo, BorderLayout.WEST);
         add(headerPanel, BorderLayout.NORTH);
 
@@ -49,16 +49,16 @@ public class EquiposPanel extends JPanel {
         scrollPane.setBorder(BorderFactory.createLineBorder(F1Theme.BORDER_COLOR));
         add(scrollPane, BorderLayout.CENTER);
 
-        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         actionsPanel.setOpaque(false);
 
-        JButton btnNuevo = F1Theme.crearBotonPrimario("Nueva Escudería", "➕");
+        JButton btnNuevo = F1Theme.crearBotonPrimario("NUEVA ESCUDERÍA", "+");
         btnNuevo.addActionListener(e -> agregarEquipoModal());
 
-        JButton btnAsignar = F1Theme.crearBotonSecundario("👤 Asignar Piloto a Equipo");
+        JButton btnAsignar = F1Theme.crearBotonSecundario("ASIGNAR PILOTO");
         btnAsignar.addActionListener(e -> asignarPilotoModal());
 
-        JButton btnEliminar = F1Theme.crearBotonSecundario("🗑️ Eliminar Equipo");
+        JButton btnEliminar = F1Theme.crearBotonSecundario("ELIMINAR ESCUDERÍA");
         btnEliminar.addActionListener(e -> eliminarEquipoSeleccionado());
 
         actionsPanel.add(btnNuevo);

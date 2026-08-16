@@ -49,7 +49,7 @@ public class SimulacionPanel extends JPanel {
         JPanel topContainer = new JPanel(new BorderLayout(10, 10));
         topContainer.setOpaque(false);
 
-        JLabel lblTitulo = new JLabel("🚦 Simulador Oficial de Sesión de Clasificación");
+        JLabel lblTitulo = new JLabel("SIMULADOR OFICIAL DE SESIÓN DE CLASIFICACIÓN");
         lblTitulo.setFont(F1Theme.FONT_TITLE);
         lblTitulo.setForeground(Color.WHITE);
         topContainer.add(lblTitulo, BorderLayout.NORTH);
@@ -61,7 +61,7 @@ public class SimulacionPanel extends JPanel {
         cbCircuitos = new JComboBox<>();
         cbPilotos = new JComboBox<>();
         cbVehiculos = new JComboBox<>();
-        cbClima = new JComboBox<>(new String[]{"🎲 Clima Aleatorio (Radar)", "☀️ Pista Seca", "🌧️ Lluvia Moderada", "⛈️ Lluvia Extrema"});
+        cbClima = new JComboBox<>(new String[]{"Clima Aleatorio (Radar)", "Pista Seca", "Lluvia Moderada", "Lluvia Extrema"});
 
         F1Theme.estilizarCombo(cbCircuitos);
         F1Theme.estilizarCombo(cbPilotos);
@@ -75,7 +75,8 @@ public class SimulacionPanel extends JPanel {
         setupBar.add(crearItemControl("Tu Monoplaza:", cbVehiculos));
         setupBar.add(crearItemControl("Clima:", cbClima));
 
-        btnSimular = F1Theme.crearBotonPrimario("INICIAR CLASIFICACIÓN", "🚦");
+        btnSimular = F1Theme.crearBotonPrimario("INICIAR CLASIFICACIÓN", "►");
+        btnSimular.setPreferredSize(new Dimension(230, 42));
         btnSimular.setFont(F1Theme.FONT_SUBTITLE);
         btnSimular.addActionListener(e -> ejecutarSimulacionAnimada());
         setupBar.add(btnSimular);
@@ -86,7 +87,7 @@ public class SimulacionPanel extends JPanel {
         JPanel bannerContainer = new JPanel(new GridLayout(2, 1, 5, 5));
         bannerContainer.setOpaque(false);
 
-        lblPoleBanner = new JLabel("🏆 Seleccione los parámetros y presione INICIAR CLASIFICACIÓN para abrir la pista.");
+        lblPoleBanner = new JLabel("POLE POSITION: Seleccione los parámetros y presione INICIAR CLASIFICACIÓN para abrir la pista.");
         lblPoleBanner.setFont(F1Theme.FONT_SUBTITLE);
         lblPoleBanner.setForeground(F1Theme.ACCENT_GOLD);
 
