@@ -4,19 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.formula1</groupId>
-        <artifactId>formula1-simulation</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+    <groupId>com.formula1</groupId>
+    <artifactId>formula1-simulation</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
 
-    <artifactId>demo</artifactId>
+    <modules>
+        <module>demo</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
 </project>
