@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Equipo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String nombre;
     private String pais;
     private String motor;

@@ -5,6 +5,8 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class RendimientoConduccion implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private double velocidadPromedioKmh;
     private Map<Clima, Double> consumoCombustible; // L/vuelta
     private Map<Clima, Double> desgasteNeumaticos; // %/vuelta
